@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch, useSelector } from "react-redux";
+import Card from "./components/Card";
+import Login from "./pages/Login";
+import { getUser, toggleLoading } from "./redux/Auth/actions";
+import { GET_USER } from "./redux/Auth/constants";
 
 function App() {
+  const AuthState = useSelector(state => state.Auth);
+  const dispatch = useDispatch();
+
+  function buttonOnClick() {
+    dispatch(toggleLoading())
+  }
+
+  function handleGetUser() {
+    dispatch(getUser());
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!AuthState.user && <Login/>}
+
+      {AuthState.user && <h1>Hai, {AuthState.user.name}</h1>}
+      <b>isLoading:</b> {AuthState.loading ? 'true' : 'false'}
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+
+      <Card/>
+
+      {/* <button onClick={buttonOnClick}> TOGGLE LOADING </button>
+
+      <button onClick={handleGetUser}> GET USER </button> */}
     </div>
   );
 }
